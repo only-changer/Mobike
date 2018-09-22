@@ -23,7 +23,7 @@ def dwt_loss(y_true, y_pred):
 	print(tf.rank(y_true))
 	print(tf.rank(y_pred))
 	#raw_input("\n")
-	return K.mean(abs(y_pred - y_true) / abs(y_true + 0.0001), axis=-1) 
+	return K.mean(abs(y_pred - y_true) , axis=-1) 
 
 
 train_dfs = [pd.read_csv(PATH_PATTERN)]
@@ -40,7 +40,7 @@ y_test = test_df[TARGET].values
 
 check = test_df['loss'].values
 
-reducer = FactorAnalysis(n_components=50)
+reducer = PCA(n_components=50)
 estimator = [ ('scaler', StandardScaler()),('reducer', reducer)]
 
 pipe = Pipeline(estimator)
@@ -154,7 +154,7 @@ print(np.shape(y_train))
 #print((y_train))
 maxe = 0
 my_anss = []
-for e in range(2000):
+for e in range(2):
 	model.fit(x_train , y_train,batch_size=32,epochs=1,validation_data=[x_test , y_test])
 	ans = model.predict(x_test)
 	#print(ans)
@@ -218,7 +218,7 @@ import pandas
 output = pandas.DataFrame(list(z))
 output.to_csv("my_ans.csv", index=False)
 
-z = np.vstack((y2))
+z = np.vstack((y_test))
 
 output = pandas.DataFrame(list(z))
 output.to_csv("my_test.csv", index=False)
